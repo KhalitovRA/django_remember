@@ -51,7 +51,23 @@ class MovieAdmin(admin.ModelAdmin):
     readonly_fields = ('get_image', )
     fieldsets = (
         (None, {
-            'fields': (('title', 'tagline'), 'get_image', 'description')
+            "fields": (("title", "tagline"),)
+        }),
+        (None, {
+            "fields": ("description", ("poster", "get_image"))
+        }),
+        (None, {
+            "fields": (("year", "world_premiere", "country"),)
+        }),
+        ("Actors", {
+            "classes": ("collapse",),
+            "fields": (("actors", "directors", "genres", "category"),)
+        }),
+        (None, {
+            "fields": (("budget", "fees_in_usa", "fees_in_world"),)
+        }),
+        ("Options", {
+            "fields": (("url", "draft"),)
         }),
     )
 
