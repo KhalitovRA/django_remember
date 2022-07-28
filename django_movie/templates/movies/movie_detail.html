@@ -2,14 +2,14 @@
 {% load static %}
 {% block title %}{{movie.title}}{% endblock title %}
 {% block container %}
-<div class="container py-md-3">
-    {% endblock container %}
+    <div class="container py-md-3">
+{% endblock container %}
 
-    {% block sidebar %}
+{% block sidebar %}
     <div class="side-bar col-lg-4">
-        {% endblock sidebar %}
+{% endblock sidebar %}
 
-        {% block movie %}
+{% block movie %}
         <div class="left-ads-display col-lg-8">
             <div class="row">
                 <div class="desc1-left col-md-6">
@@ -21,15 +21,15 @@
                     </h3>
                     <h5 class="editContent"></h5>
                     <ul>
-                        <li style="list-style: none">
+                        <li>
                             <span><b>Год:</b> {{ movie.year }}</span></li>
-                        <li style="list-style: none">
+                        <li>
                             <span><b>Страна:</b> {{ movie.country }}</span>
                         </li>
-                        <li style="list-style: none">
+                        <li>
                             <span><b>Слоган:</b> {{ movie.tagline }}</span>
                         </li>
-                        <li style="list-style: none">
+                        <li>
                                     <span><b>Режиссер:</b>
                                         {% for director in movie.directors.all %}
                                         <a href="{{director.get_absolute_url}}">
@@ -38,7 +38,7 @@
                                         {% endfor %}
                                     </span>
                         </li>
-                        <li style="list-style: none"><span><b>Актеры:</b>
+                        <li><span><b>Актеры:</b>
                                     {% for actor in movie.actors.all %}
                                           <a href="{{actor.get_absolute_url}}">
                                             {{ actor.name }}
@@ -46,67 +46,67 @@
                                     {% endfor %}
                                 </span>
                         </li>
-                        <li style="list-style: none"><span><b>Жанр:</b>
+                        <li><span><b>Жанр:</b>
                                     {% for genre in movie.genres.all %}
                                         {{ genre.name }}
                                     {% endfor %}
                                     </span>
                         </li>
-                        <li style="list-style: none"><span><b>Премьера в мире:</b> {{ movie.world_premiere }}</span>
+                        <li><span><b>Премьера в мире:</b> {{ movie.world_premiere }}</span>
                         </li>
-                        <li style="list-style: none">
+                        <li>
                             <span><b>Бюджет:</b> ${{ movie.budget }}</span></li>
-                        <li style="list-style: none">
+                        <li>
                             <span><b>Сборы в США:</b> ${{ movie.fees_in_usa }}</span></li>
-                        <li style="list-style: none"><span><b>Сборы в мире:</b> ${{ movie.fees_in_world }}</span>
+                        <li><span><b>Сборы в мире:</b> ${{ movie.fees_in_world }}</span>
                         </li>
-                        <li style="list-style: none">
-                            <a href="#"><b>Рейтинг:</b>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="editContent"
-                                      style="outline: none; cursor: inherit;">5.0</span>
-                            </a>
+                        <li>
+                            <form action="{% url 'add_rating' %}" method="post" name="rating">
+                                <b>Рейтинг:</b>
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ movie.id }}" name="movie">
+                                <span class="rating">
+                                    {% for k, v in star_form.fields.star.choices %}
+                                    <input id="rating{{ v }}" type="radio" name="star"
+                                           value="{{ v }}">
+                                    <label for="rating{{ v }}">{{ k }}</label>
+                                    {% endfor %}
+                                </span>
+                                <span class="editContent">4.0</span>
+                            </form>
                         </li>
-                        <div class="share-desc">
-                            <div class="share">
-                                <h4 class="editContent"
-                                    style="outline: none; cursor: inherit;">
-                                    Share:</h4>
-                                <ul class="w3layouts_social_list list-unstyled">
-                                    <li>
-                                        <a href="#" class="w3pvt_facebook editContent"
-                                           style="outline: none; cursor: inherit;">
+                    </ul>
+                    <div class="share-desc">
+                        <div class="share">
+                            <h4 class="editContent"
+                                style="outline: none; cursor: inherit;">
+                                Share:</h4>
+                            <ul class="w3layouts_social_list list-unstyled">
+                                <li>
+                                    <a href="#" class="w3pvt_facebook editContent"
+                                       style="outline: none; cursor: inherit;">
                                                 <span class="fa fa-facebook-f"
                                                       style="outline: none; cursor: inherit;"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="w3pvt_twitter editContent"
-                                           style="outline: none; cursor: inherit;">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="w3pvt_twitter editContent"
+                                       style="outline: none; cursor: inherit;">
                                                 <span class="fa fa-twitter"
                                                       style="outline: none; cursor: inherit;"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="w3pvt_dribble editContent"
-                                           style="outline: none; cursor: inherit;">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="w3pvt_dribble editContent"
+                                       style="outline: none; cursor: inherit;">
                                                 <span class="fa fa-dribbble"
                                                       style="outline: none; cursor: inherit;"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
             </div>
             <div class="row sub-para-w3layouts mt-5">
@@ -194,8 +194,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
         <script>
             function addReview(name, id) {
@@ -203,4 +202,4 @@
                 document.getElementById('contactcomment').innerText = `${name}, `
             }
         </script>
-        {% endblock movie %}
+{% endblock movie %}
