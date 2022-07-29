@@ -21,6 +21,7 @@ class MoviesView(GenreYear, ListView):
 
     model = Movie
     queryset = Movie.objects.filter(draft=False)
+    paginate_by = 1
 
 
 class MovieDetailView(GenreYear, DetailView):
@@ -57,10 +58,18 @@ class ActorView(GenreYear, DetailView):
 
 class FilterMoviesView(GenreYear, ListView):
 
+    paginate_by = 1
+
     def get_queryset(self):
         queryset = Movie.objects.filter(
             Q(year__in=self.request.GET.getlist('year')) | Q(genres__in=self.request.GET.getlist('genre'))).distinct()
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['year'] = ''.join([f'year={x}&' for x in self.request.GET.getlist('year')])
+        context['genre'] = ''.join([f'genre={x}&' for x in self.request.GET.getlist('genre')])
+        return context
 
 
 class AddStarRating(View):
@@ -84,3 +93,16 @@ class AddStarRating(View):
             return HttpResponse(status=201)
         else:
             return HttpResponse(status=400)
+
+
+class Search(ListView):
+
+    paginate_by = 2
+
+    def get_queryset(self):
+        return Movie.objects.filter(title__icontains=self.request.GET.get('q'))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['q'] = f'q={self.request.GET.get("q")}&'
+        return context
