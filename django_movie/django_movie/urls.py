@@ -25,6 +25,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('accounts/', include('allauth.urls')),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('contact/', include('contact.urls')),
     path('', include('movies.urls')),
